@@ -1,0 +1,69 @@
+server:
+  port: 8081
+    
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      connection-timeout: 10000
+      idleTimeout: 10000
+      maximumPoolSize: 10
+      minimumIdle: 5
+      validation-timeout: 10000
+    password: qwer1234
+    url: jdbc:mariadb://192.168.56.151:13306/jpetstoredb
+    username: jpetstore
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  rabbitmq:
+    host: localhost
+    password: qwer1234
+    port: 5672
+    username: jpetstore
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 2000
+        loggerLevel: FULL
+  httpclient:
+    enabled: true
+    maxConnections: 200
+    maxConnectionsPerRoute: 100
+    connectionTimerRepeat: 30000
+  hystrix:
+    enabled: true
+
+order-api:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: localhost:16061,localhost:16062
+
+catalog-api:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: localhost:17071,localhost:17072
+
+hystrix:
+  command:
+    default:
+      execution.isolation.thread.timeoutInMilliseconds: 500
+      circuitBreaker.errorThresholdPercentage: 50
+      circuitBreaker.requestVolumeThreshold: 2
+      metrics.rollingStats.timeInMilliseconds: 10000
+      circuitBreaker.sleepWindowInMilliseconds: 5000
+
+management:
+  endpoint:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,metrics,refresh,bus-refresh
